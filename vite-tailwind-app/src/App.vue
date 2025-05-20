@@ -1,13 +1,15 @@
 <template>
   <div class="p-6 max-w-5xl mx-auto">
     <h2 class="text-2xl font-bold mb-4">📅 KCISA 문화데이터 캘린더</h2>
-    <vue-cal
+    <!-- <vue-cal
       style="height: 600px"
       :events="events"
       default-view="month"
       :on-event-click="onEventClick"
       :selected-date="new Date('2020-10-01')"
-    />
+    /> -->
+
+    <FullCalendar :options="calendarOptions" />
 
     <div v-if="selectedEvent" class="mt-4 p-4 border rounded shadow">
       <h3 class="text-xl font-semibold mb-2">{{ selectedEvent.title }}</h3>
@@ -26,9 +28,29 @@ import VueCal from "vue-cal";
 import "vue-cal/dist/vuecal.css";
 import axios from "axios";
 import { XMLParser } from "fast-xml-parser";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
 
 const events = ref([]);
 const selectedEvent = ref(null);
+
+const calendarOptions = ref({
+  plugins: [dayGridPlugin, interactionPlugin],
+  initialView: "dayGridMonth",
+  initialDate: "2020-10-01",
+  // dateClick: (arg) => alert("date click! " + arg.dateStr),
+  events: [],
+  eventClick: function (info) {
+    selectedEvent.value = {
+      title: info.event.title,
+      start: info.event.startStr,
+      end: info.event.endStr,
+      place: info.event.extendedProps.place || "",
+      url: info.event.url,
+      description: info.event.extendedProps.description,
+    };
+  },
+});
 
 function formatDate(yyyymmdd) {
   return `${yyyymmdd.slice(0, 4)}-${yyyymmdd.slice(4, 6)}-${yyyymmdd.slice(
@@ -51,6 +73,26 @@ async function fetchKcisaData() {
     console.log(res.data); // XML -> JSON 결과
     const json = JSON.parse(res.data);
     const items = json.response.body.items.item;
+
+    const fullCalendarEvents = items
+      .map((item) => {
+        const { start, end } = parsePeriod(item.period);
+
+        if (!start || !end) return null;
+        return {
+          title: item.title,
+          start,
+          end,
+          extendedProps: {
+            place: item.sourceTitle || "",
+            url: item.url,
+            description: item.description,
+          },
+        };
+      })
+      .filter(Boolean);
+
+    calendarOptions.value.events = fullCalendarEvents;
 
     events.value = items
       .map((item) => {
@@ -84,6 +126,21 @@ function parsePeriod(period) {
 }
 
 onMounted(fetchKcisaData);
+</script>
+
+<script>
+import FullCalendar from "@fullcalendar/vue3";
+
+export default {
+  components: {
+    FullCalendar, // make the <FullCalendar> tag available
+  },
+  methods: {
+    handleDateClick: function (arg) {
+      // alert("date click! " + arg.dateStr);
+    },
+  },
+};
 </script>
 
 <style scoped>
