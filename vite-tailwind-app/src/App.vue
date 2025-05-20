@@ -88,6 +88,21 @@ onMounted(fetchKcisaData);
 
 <style scoped>
 .vuecal {
-  font-size: 0.9rem;
+  --vuecal-primary: #3b82f6;
+  --vuecal-accent: #60a5fa;
+  --vuecal-bg: #f9fafb;
+  --vuecal-text: #1f2937;
+  border-radius: 1rem;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.4s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
