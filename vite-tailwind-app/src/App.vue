@@ -48,7 +48,8 @@ async function fetchKcisaData() {
       "http://api.kcisa.kr/API_CNV_050/request?serviceKey=25a8f85e-7a1f-4849-b9b9-c1fdae8e9e92&numOfRows=100",
       { responseType: "text" }
     );
-    const json = parser.parse(res.data);
+    console.log(res.data); // XML -> JSON 결과
+    const json = JSON.parse(res.data);
     const items = json.response.body.items.item;
 
     events.value = items
