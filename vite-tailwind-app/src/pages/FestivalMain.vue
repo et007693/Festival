@@ -21,14 +21,14 @@ const props = defineProps({
 });
 
 const calendarOptions = ref({
-  plugins: [dayGridPlugin, interactionPlugin, multimonthPlugin],
-  initialView: "multiMonthYear",
+  plugins: [multimonthPlugin, dayGridPlugin, interactionPlugin],
+  initialView: "dayGridMonth",
   height: "auto",
   events: [],
   headerToolbar: {
     left: "prev,next today",
     center: "title",
-    right: "dayGridMonth,dayGridWeek,multiMonthYear",
+    right: "multiMonthYear,dayGridMonth,dayGridWeek",
   },
   eventDidMount(info) {
     info.el.style.marginBottom = "4px";
