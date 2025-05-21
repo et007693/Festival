@@ -37,6 +37,7 @@ const calendarOptions = ref({
       place: info.event.extendedProps.place || "",
       url: info.event.extendedProps.url,
       description: info.event.extendedProps.description,
+      image: info.event.extendedProps.image || "",
     });
   },
 });
@@ -49,7 +50,7 @@ async function fetchKcisaData() {
       {
         params: {
           serviceKey: "26fad05b-3663-4a81-82ca-2df2ada80ae9",
-          numOfRows: 10,
+          numOfRows: 30,
           pageNo: 1,
         },
         headers: { Accept: "application/json" },
@@ -64,14 +65,20 @@ async function fetchKcisaData() {
 
       const key = item.TITLE;
       if (!uniqueEventsMap.has(key)) {
+        const eventColor = getColorByCategory(
+          item.CATEGORY || item.CNTC_INSTT_NM
+        );
+
         uniqueEventsMap.set(key, {
           title: item.TITLE,
           start,
           end,
+          color: eventColor, //색상 지정
           extendedProps: {
             place: item.CNTC_INSTT_NM || "",
             url: item.URL,
             description: item.DESCRIPTION,
+            image: item.IMAGE_OBJECT,
           },
         });
       }
@@ -87,6 +94,20 @@ function parsePeriod(period) {
   if (!period || !period.includes("~")) return { start: null, end: null };
   const [start, end] = period.split("~").map((s) => s.trim());
   return { start, end: end || start };
+}
+
+// 색상 지정 함수
+function getColorByCategory(category) {
+  switch (category) {
+    case "문화":
+      return "#34d399"; // green-400
+    case "전시":
+      return "#60a5fa"; // blue-400
+    case "교육":
+      return "#fbbf24"; // yellow-400
+    default:
+      return "#a78bfa"; // purple-400
+  }
 }
 
 onMounted(fetchKcisaData);

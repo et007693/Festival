@@ -4,14 +4,20 @@
     <FestivalMain :setSelectedEvent="setSelectedEvent" />
     <BaseModal v-model="showModal">
       <div v-if="selectedEvent" class="mt-4 p-4 border rounded shadow">
+        <img
+          v-if="selectedEvent.image"
+          :src="selectedEvent.image"
+          alt="이벤트 이미지"
+          class="w-auto h-[200px] object-cover mb-4 rounded"
+        />
         <h3 class="text-xl font-semibold mb-2">{{ selectedEvent.title }}</h3>
         <p>
-          <strong>기간:</strong> {{ selectedEvent.start }} ~
+          <strong>기간: </strong> {{ selectedEvent.start }} ~
           {{ selectedEvent.end }}
         </p>
-        <p><strong>장소:</strong> {{ selectedEvent.place }}</p>
+        <p><strong>장소: </strong> {{ selectedEvent.place }}</p>
         <p>
-          <strong>링크:</strong>
+          <strong>링크: </strong>
           <a
             :href="selectedEvent.url"
             target="_blank"
@@ -40,3 +46,10 @@ const setSelectedEvent = (event) => {
 };
 const showModal = ref(false);
 </script>
+
+<style>
+/* 마우스 올렸을 때 커서 추가 */
+.fc-event {
+  @apply cursor-pointer;
+}
+</style>
