@@ -7,12 +7,12 @@
     <div v-if="selectedEvent" class="mt-4 p-4 border rounded shadow">
       <h3 class="text-xl font-semibold mb-2">{{ selectedEvent.title }}</h3>
       <p>
-        <strong>기간:</strong> {{ selectedEvent.start }} ~
+        <strong>기간: </strong> {{ selectedEvent.start }} ~
         {{ selectedEvent.end }}
       </p>
-      <p><strong>장소:</strong> {{ selectedEvent.place }}</p>
+      <p><strong>장소: </strong> {{ selectedEvent.place }}</p>
       <p>
-        <strong>링크:</strong>
+        <strong>링크: </strong>
         <a
           :href="selectedEvent.url"
           target="_blank"
@@ -22,7 +22,7 @@
         </a>
       </p>
       <div>
-        <strong>설명:</strong>
+        <strong>설명: </strong>
         <div v-html="selectedEvent.description"></div>
       </div>
     </div>
@@ -38,3 +38,10 @@ const setSelectedEvent = (event) => {
   selectedEvent.value = event;
 };
 </script>
+
+<style>
+/* 마우스 올렸을 때 커서 추가 */
+.fc-event {
+  @apply cursor-pointer;
+}
+</style>
