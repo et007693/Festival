@@ -24,6 +24,11 @@ const calendarOptions = ref({
   initialView: "dayGridMonth",
   height: "auto",
   events: [],
+  headerToolbar: {
+    left: "prev,next today",
+    center: "title",
+    right: "dayGridMonth,dayGridWeek",
+  },
   eventClick: function (info) {
     props.setSelectedEvent({
       title: info.event.title,
