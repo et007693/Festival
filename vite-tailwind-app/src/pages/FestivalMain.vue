@@ -49,9 +49,9 @@ const calendarOptions = ref({
   height: "auto",
   events: [],
   headerToolbar: {
-    left: "prev,next today",
+    left: "multiMonthYear,dayGridMonth,dayGridWeek",
     center: "title",
-    right: "multiMonthYear,dayGridMonth,dayGridWeek",
+    right: "prev,next today",
   },
   eventDidMount(info) {
     // 이벤트 DOM에 고유 ID 지정
