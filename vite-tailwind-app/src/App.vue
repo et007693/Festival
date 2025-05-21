@@ -4,6 +4,12 @@
     <FestivalMain :setSelectedEvent="setSelectedEvent" />
     <BaseModal v-model="showModal">
       <div v-if="selectedEvent" class="mt-4 p-4 border rounded shadow">
+        <img
+          v-if="selectedEvent.image"
+          :src="selectedEvent.image"
+          alt="이벤트 이미지"
+          class="w-auto h-[200px] object-cover mb-4 rounded"
+        />
         <h3 class="text-xl font-semibold mb-2">{{ selectedEvent.title }}</h3>
         <p>
           <strong>기간: </strong> {{ selectedEvent.start }} ~

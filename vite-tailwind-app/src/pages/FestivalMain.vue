@@ -32,6 +32,7 @@ const calendarOptions = ref({
       place: info.event.extendedProps.place || "",
       url: info.event.extendedProps.url,
       description: info.event.extendedProps.description,
+      image: info.event.extendedProps.image || "",
     });
   },
 });
@@ -44,7 +45,7 @@ async function fetchKcisaData() {
       {
         params: {
           serviceKey: "26fad05b-3663-4a81-82ca-2df2ada80ae9",
-          numOfRows: 10,
+          numOfRows: 30,
           pageNo: 1,
         },
         headers: { Accept: "application/json" },
@@ -72,6 +73,7 @@ async function fetchKcisaData() {
             place: item.CNTC_INSTT_NM || "",
             url: item.URL,
             description: item.DESCRIPTION,
+            image: item.IMAGE_OBJECT,
           },
         });
       }
