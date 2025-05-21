@@ -1,9 +1,7 @@
 <template>
   <div class="p-6 max-w-5xl mx-auto">
     <h2 class="text-2xl font-bold mb-4">📅 KCISA 문화데이터 캘린더</h2>
-
     <FestivalMain :setSelectedEvent="setSelectedEvent" />
-
     <BaseModal v-model="showModal">
       <div v-if="selectedEvent" class="mt-4 p-4 border rounded shadow">
         <h3 class="text-xl font-semibold mb-2">{{ selectedEvent.title }}</h3>
@@ -42,5 +40,3 @@ const setSelectedEvent = (event) => {
 };
 const showModal = ref(false);
 </script>
-
-<style scoped></style>
