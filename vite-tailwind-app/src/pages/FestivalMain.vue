@@ -11,6 +11,7 @@ import { ref, onMounted } from "vue";
 import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import multimonthPlugin from "@fullcalendar/multimonth";
 import axios from "axios";
 import { XMLParser } from "fast-xml-parser";
 
@@ -20,14 +21,14 @@ const props = defineProps({
 });
 
 const calendarOptions = ref({
-  plugins: [dayGridPlugin, interactionPlugin],
-  initialView: "dayGridMonth",
+  plugins: [dayGridPlugin, interactionPlugin, multimonthPlugin],
+  initialView: "multiMonthYear",
   height: "auto",
   events: [],
   headerToolbar: {
     left: "prev,next today",
     center: "title",
-    right: "dayGridMonth,dayGridWeek",
+    right: "dayGridMonth,dayGridWeek,multiMonthYear",
   },
   eventDidMount(info) {
     info.el.style.marginBottom = "4px";

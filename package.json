@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "@fullcalendar/list": "^6.1.17"
+    "@fullcalendar/core": "^6.1.17",
+    "@fullcalendar/list": "^6.1.17",
+    "@fullcalendar/multimonth": "^6.1.17"
   }
 }
