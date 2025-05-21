@@ -54,6 +54,8 @@ const calendarOptions = ref({
     right: "multiMonthYear,dayGridMonth,dayGridWeek",
   },
   eventDidMount(info) {
+    // 이벤트 DOM에 고유 ID 지정
+    info.el.setAttribute("data-event-id", info.event.id);
     info.el.style.marginBottom = "4px";
     info.el.style.padding = "1px 10px";
   },
@@ -68,13 +70,30 @@ const calendarOptions = ref({
       image: info.event.extendedProps.image || "",
     });
   },
+  eventMouseEnter(info) {
+    const eventId = info.event.id;
+    const allEls = document.querySelectorAll(`[data-event-id="${eventId}"]`);
+    allEls.forEach((el) => {
+      el.style.backgroundColor = "rgba(0, 0, 0, 0.15)";
+      el.style.borderColor = "rgba(0, 0, 0, 0.4)";
+    });
+  },
+  eventMouseLeave(info) {
+    const eventId = info.event.id;
+    const { backgroundColor, borderColor } = info.event.extendedProps;
+    const allEls = document.querySelectorAll(`[data-event-id="${eventId}"]`);
+    allEls.forEach((el) => {
+      el.style.backgroundColor = backgroundColor || "";
+      el.style.borderColor = borderColor || "";
+    });
+  },
 });
 
 // 검색 버튼 클릭 or 엔터 시 호출
 function onSearchClick() {
   const query = searchQuery.value.trim().toLowerCase();
   if (!query) {
-    calendarOptions.value.events = [...allEvents.value]; // 검색어 없으면 전체
+    calendarOptions.value.events = [...allEvents.value];
     return;
   }
 
@@ -109,18 +128,24 @@ async function fetchKcisaData() {
       const key = item.TITLE;
       if (!uniqueEventsMap.has(key)) {
         const eventColor = getColorByCategory(item.GENRE);
+        const bgColor = hexToRgba(eventColor[0], 0.3);
+        const bdColor = hexToRgba(eventColor[0], 0.7);
+
         uniqueEventsMap.set(key, {
+          id: key, // 반드시 고유 ID 지정
           title: item.TITLE,
           start,
           end,
-          backgroundColor: hexToRgba(eventColor[0], 0.3),
-          borderColor: hexToRgba(eventColor[0], 0.7),
+          backgroundColor: bgColor,
+          borderColor: bdColor,
           textColor: eventColor[1],
           extendedProps: {
             place: item.CNTC_INSTT_NM || "",
             url: item.URL,
             description: item.DESCRIPTION,
             image: item.IMAGE_OBJECT,
+            backgroundColor: bgColor,
+            borderColor: bdColor,
           },
         });
       }
@@ -134,12 +159,14 @@ async function fetchKcisaData() {
   }
 }
 
+// 기간 파싱
 function parsePeriod(period) {
   if (!period || !period.includes("~")) return { start: null, end: null };
   const [start, end] = period.split("~").map((s) => s.trim());
   return { start, end: end || start };
 }
 
+// HEX → RGBA 변환
 function hexToRgba(hex, alpha = 0.4) {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
@@ -147,6 +174,7 @@ function hexToRgba(hex, alpha = 0.4) {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
+// 카테고리에 따른 색상
 function getColorByCategory(category) {
   switch (category) {
     case "예정전시":
