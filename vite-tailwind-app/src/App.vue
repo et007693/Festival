@@ -12,7 +12,7 @@
 =======
 >>>>>>> refs/remotes/origin/master
 
-    <FullCalendar :options="calendarOptions" />
+    <FestivalMain :setSelectedEvent="setSelectedEvent" />
 
     <div v-if="selectedEvent" class="mt-4 p-4 border rounded shadow">
       <h3 class="text-xl font-semibold mb-2">{{ selectedEvent.title }}</h3>
@@ -27,8 +27,9 @@
           :href="selectedEvent.url"
           target="_blank"
           class="text-blue-600 hover:underline"
-          >{{ selectedEvent.url }}</a
         >
+          {{ selectedEvent.url }}
+        </a>
       </p>
       <div>
         <strong>설명:</strong>
@@ -39,15 +40,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import FullCalendar from "@fullcalendar/vue3";
-import axios from "axios";
-import { XMLParser } from "fast-xml-parser";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
+import { ref } from "vue";
+import FestivalMain from "./pages/FestivalMain.vue";
 
-const events = ref([]);
 const selectedEvent = ref(null);
+<<<<<<< HEAD
 
 const calendarOptions = ref({
   plugins: [dayGridPlugin, interactionPlugin],
@@ -206,3 +203,9 @@ export default {
 =======
 <style scoped></style>
 >>>>>>> refs/remotes/origin/master
+=======
+const setSelectedEvent = (event) => {
+  selectedEvent.value = event;
+};
+</script>
+>>>>>>> b12efec14445049d8b018eff2598cbdbe4c94dd5
