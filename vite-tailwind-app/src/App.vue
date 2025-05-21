@@ -3,10 +3,7 @@
     <h2 class="text-2xl font-bold mb-4">📅 KCISA 문화데이터 캘린더</h2>
     <FestivalMain :setSelectedEvent="setSelectedEvent" />
     <BaseModal v-model="showModal">
-      <div
-        v-if="selectedEvent"
-        class="flex gap-3 mt-4 p-4 border rounded shadow"
-      >
+      <div v-if="selectedEvent" class="flex gap-3 p-4 border rounded shadow">
         <img
           v-if="selectedEvent.image"
           :src="selectedEvent.image"

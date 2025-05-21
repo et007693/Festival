@@ -7,8 +7,12 @@
     <div
       class="relative bg-white rounded-lg shadow-lg w-[90%] max-h-[80vh] overflow-y-auto max-w-screen-md p-6"
     >
-      <div class="flex justify-end gap-3">
-        <button @click="$emit('update:modelValue', false)" aria-label="닫기">
+      <div class="flex justify-end absolute right-8 top-6">
+        <button
+          class="text-2xl"
+          @click="$emit('update:modelValue', false)"
+          aria-label="닫기"
+        >
           &times;
         </button>
       </div>
