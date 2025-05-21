@@ -29,6 +29,10 @@ const calendarOptions = ref({
     center: "title",
     right: "dayGridMonth,dayGridWeek",
   },
+  eventDidMount(info) {
+    info.el.style.marginBottom = "4px";
+    info.el.style.padding = "1px 10px";
+  },
   eventClick: function (info) {
     props.setSelectedEvent({
       title: info.event.title,
@@ -57,6 +61,7 @@ async function fetchKcisaData() {
       }
     );
     const items = res.data.response.body.items.item;
+    console.log(items);
 
     const uniqueEventsMap = new Map();
     items.forEach((item) => {
@@ -65,15 +70,15 @@ async function fetchKcisaData() {
 
       const key = item.TITLE;
       if (!uniqueEventsMap.has(key)) {
-        const eventColor = getColorByCategory(
-          item.CATEGORY || item.CNTC_INSTT_NM
-        );
+        const eventColor = getColorByCategory(item.GENRE);
 
         uniqueEventsMap.set(key, {
           title: item.TITLE,
           start,
           end,
-          color: eventColor, //색상 지정
+          backgroundColor: hexToRgba(eventColor[0], 0.3),
+          borderColor: hexToRgba(eventColor[0], 0.7),
+          textColor: eventColor[1],
           extendedProps: {
             place: item.CNTC_INSTT_NM || "",
             url: item.URL,
@@ -95,18 +100,24 @@ function parsePeriod(period) {
   const [start, end] = period.split("~").map((s) => s.trim());
   return { start, end: end || start };
 }
+function hexToRgba(hex, alpha = 0.4) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
 
 // 색상 지정 함수
 function getColorByCategory(category) {
   switch (category) {
-    case "문화":
-      return "#34d399"; // green-400
+    case "예정전시":
+      return ["#34d399", "#065f46"]; // green-400
     case "전시":
-      return "#60a5fa"; // blue-400
-    case "교육":
-      return "#fbbf24"; // yellow-400
+      return ["#60a5fa", "#1e3a8a"]; // blue-400
+    case "현재전시":
+      return ["#fbbf24", "#78350f"]; // yellow-400
     default:
-      return "#a78bfa"; // purple-400
+      return ["#a78bfa", "#4c1d95"]; // purple-400
   }
 }
 
